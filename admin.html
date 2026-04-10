@@ -1,0 +1,868 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>CMA — 5824 Rudolph Ave · Admin View · The Newcomer Group</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b1622;
+    --panel:#10202f;
+    --panel2:#16293c;
+    --ink:#e9f1f8;
+    --muted:#9bb1c4;
+    --line:#22384c;
+    --accent:#5fb7ff;
+    --green:#39d28a;
+    --amber:#ffb648;
+    --red:#ff6b6b;
+    --gold:#e6c46a;
+    --teal:#119090;
+    --teal-dark:#076261;
+    --teal-glow:#1ec0c0;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:linear-gradient(180deg,#08111b 0%, #0b1622 60%);color:var(--ink);font-family:'Open Sans',-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;line-height:1.55}
+  h1,h2,h3,h4{font-family:'Montserrat','Open Sans',sans-serif;font-weight:700;letter-spacing:.2px}
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline}
+  header{padding:28px 32px 18px;border-bottom:1px solid var(--line)}
+  header h1{margin:0 0 6px;font-size:26px;letter-spacing:.2px}
+  header .sub{color:var(--muted);font-size:14px}
+  main{padding:24px 32px 60px;max-width:1500px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+
+  .section{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:24px}
+  .section h2{margin:0 0 14px;font-size:15px;text-transform:uppercase;letter-spacing:1.4px;color:var(--muted)}
+  .section h2 .count{color:var(--accent);font-weight:700;letter-spacing:0;text-transform:none;font-size:13px;margin-left:8px}
+
+  /* Subject property section */
+  .subject-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:22px}
+  @media (max-width:1000px){ .subject-grid{grid-template-columns:1fr} }
+  .photo-gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;grid-template-rows:repeat(2,auto)}
+  .photo-gallery .hero{grid-column:span 4;grid-row:1;aspect-ratio:16/8;background:#16293c;border-radius:10px;background-size:cover;background-position:center;cursor:pointer}
+  .photo-gallery .thumb{aspect-ratio:4/3;background:#16293c;border-radius:8px;background-size:cover;background-position:center;cursor:pointer;transition:transform .15s;border:2px solid transparent}
+  .photo-gallery .thumb:hover{transform:scale(1.03);border-color:var(--accent)}
+  .photo-caption{font-size:11px;color:var(--muted);text-align:center;margin-top:6px}
+  .kv{display:grid;grid-template-columns:150px 1fr;gap:6px 12px;font-size:13.5px}
+  .kv .k{color:var(--muted)}
+  .kv .v{color:var(--ink)}
+  .zestimate-box{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+  .zestimate-box .cell{background:#0e1c2a;border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+  .zestimate-box .cell .lab{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+  .zestimate-box .cell .val{font-size:17px;font-weight:600;margin-top:2px}
+
+  /* Comparables section */
+  .comp-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  @media (max-width:1200px){ .comp-cards{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:700px){ .comp-cards{grid-template-columns:1fr} }
+  .comp-card{background:#0e1c2a;border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column}
+  .comp-card .img{aspect-ratio:4/3;background:#16293c;background-size:cover;background-position:center;position:relative}
+  .comp-card .img.anchor::after{content:"★ ANCHOR COMP";position:absolute;top:10px;left:10px;background:var(--gold);color:#0b1622;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.5px}
+  .comp-card .img .status-badge{position:absolute;top:10px;right:10px;padding:3px 8px;border-radius:4px;font-size:10px;font-weight:700;letter-spacing:.5px;background:#0b1622;color:var(--ink);border:1px solid var(--line)}
+  .comp-card .img .status-badge.closed{background:#1c5639;color:#7fffcf;border-color:#2a7a54}
+  .comp-card .img .status-badge.pending{background:#5a4a1c;color:#ffda88;border-color:#8a711f}
+  .comp-card .img .status-badge.active{background:#1c4a6b;color:#a9d7ff;border-color:#2a6e9f}
+  .comp-card .body{padding:12px 14px;flex:1;display:flex;flex-direction:column;gap:6px}
+  .comp-card .addr{font-size:13.5px;font-weight:600;color:var(--ink);line-height:1.3}
+  .comp-card .sub{font-size:11.5px;color:var(--muted)}
+  .comp-card .price{font-size:20px;font-weight:700;margin-top:4px}
+  .comp-card .ppsf{font-size:11.5px;color:var(--muted)}
+  .comp-card .meta{display:flex;gap:10px;font-size:11px;color:var(--muted);margin-top:6px;flex-wrap:wrap}
+  .comp-card .meta span{background:#16293c;padding:2px 7px;border-radius:4px}
+  .comp-card .links{margin-top:auto;padding-top:10px;display:flex;gap:8px;border-top:1px dashed var(--line);margin-top:10px}
+  .comp-card .links a{font-size:11px;color:var(--accent);flex:1;text-align:center;padding:5px;background:#16293c;border-radius:5px;border:1px solid var(--line)}
+  .comp-card .links a:hover{background:#1c3349;text-decoration:none}
+
+  /* Editable table */
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-top:8px}
+  th,td{padding:8px 6px;text-align:left;border-bottom:1px solid var(--line)}
+  th{color:var(--muted);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.6px}
+  td input{width:100%;background:#0e1c2a;border:1px solid var(--line);color:var(--ink);padding:6px 8px;border-radius:6px;font-size:13px}
+  td input.num{text-align:right}
+  .row-tools{display:flex;gap:8px;margin-top:10px}
+  button.btn{background:#1c3349;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:8px 12px;font-size:12.5px;cursor:pointer}
+  button.btn:hover{background:#264563}
+
+  /* Strategies */
+  .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media (max-width:1000px){ .grid3{grid-template-columns:1fr} }
+  .strategy{position:relative;background:#0e1c2a;border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px;overflow:hidden}
+  .strategy::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px}
+  .s1::before{background:var(--green)}
+  .s2::before{background:var(--accent)}
+  .s3::before{background:var(--gold)}
+  .strategy h3{margin:0;font-size:15px;letter-spacing:.4px;text-transform:uppercase}
+  .strategy .price{font-size:30px;font-weight:700;letter-spacing:.3px}
+  .strategy .ppsf{color:var(--muted);font-size:12.5px;margin-top:-8px}
+  .stat{display:flex;justify-content:space-between;font-size:13px;color:var(--ink);padding:6px 0;border-top:1px dashed var(--line)}
+  .stat .label{color:var(--muted)}
+  .slider-wrap{display:flex;flex-direction:column;gap:6px;margin-top:4px}
+  .slider-wrap label{font-size:12px;color:var(--muted);display:flex;justify-content:space-between}
+  input[type=range]{-webkit-appearance:none;width:100%;height:6px;background:#1d3247;border-radius:99px;outline:none}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:var(--accent);border:2px solid #0b1622;cursor:pointer}
+  .s1 input[type=range]::-webkit-slider-thumb{background:var(--green)}
+  .s3 input[type=range]::-webkit-slider-thumb{background:var(--gold)}
+  .returnbox{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:6px}
+  .returnbox .cell{background:#0b1622;border:1px solid var(--line);border-radius:8px;padding:8px 10px}
+  .returnbox .cell .lab{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+  .returnbox .cell .val{font-size:15px;font-weight:600}
+  .scenario-tag{font-size:10.5px;text-transform:uppercase;letter-spacing:.8px;padding:3px 8px;border-radius:99px;border:1px solid var(--line);background:#0b1622;align-self:flex-start}
+  .s1 .scenario-tag{color:var(--green);border-color:#1c5639}
+  .s2 .scenario-tag{color:var(--accent);border-color:#1c4a6b}
+  .s3 .scenario-tag{color:var(--gold);border-color:#5a4a1c}
+  details summary{cursor:pointer;color:var(--accent);font-size:12.5px;margin-top:6px}
+
+  .footnote{color:var(--muted);font-size:11.5px;margin-top:10px;line-height:1.5}
+  .small{font-size:12.5px;color:var(--muted)}
+
+  .market-value-bar{display:flex;gap:24px;flex-wrap:wrap;align-items:flex-end;padding:14px 18px;background:#0e1c2a;border:1px solid var(--line);border-radius:12px;margin-bottom:16px}
+  .market-value-bar .big{font-size:28px;font-weight:700}
+  .market-value-bar .med{font-size:18px}
+
+  .legend{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px}
+  .legend span{font-size:11.5px;color:var(--muted);display:flex;align-items:center;gap:6px}
+  .swatch{width:10px;height:10px;border-radius:2px;display:inline-block}
+
+  /* Dynamic single strategy panel */
+  .dyn-panel{position:relative;border-radius:18px;padding:26px 28px;border:2px solid var(--line);background:#0e1c2a;transition:background .25s ease, border-color .25s ease;overflow:hidden}
+  .dyn-panel.zone-loss{background:linear-gradient(135deg,#1a1a2e 0%,#0e1c2a 100%);border-color:#5a4a1c}
+  .dyn-panel.zone-aggressive{background:linear-gradient(135deg,#0f2a1c 0%,#0e1c2a 100%);border-color:var(--green)}
+  .dyn-panel.zone-market{background:linear-gradient(135deg,#0e1c2a 0%,#162a3c 100%);border-color:var(--accent)}
+  .dyn-panel.zone-plus{background:linear-gradient(135deg,#0e1c2a 0%,#1f2438 100%);border-color:#6a8acc}
+  .dyn-panel.zone-aspirational{background:linear-gradient(135deg,#1f1a0a 0%,#0e1c2a 100%);border-color:var(--gold)}
+  .dyn-panel.zone-golden{background:linear-gradient(135deg,#2a1a0a 0%,#0e1c2a 100%);border-color:var(--amber)}
+  .dyn-head{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+  .dyn-tag{font-size:10.5px;text-transform:uppercase;letter-spacing:1.4px;padding:5px 11px;border-radius:99px;border:1px solid currentColor;font-weight:700}
+  .zone-loss .dyn-tag{color:#9c8a4a}
+  .zone-aggressive .dyn-tag{color:var(--green)}
+  .zone-market .dyn-tag{color:var(--accent)}
+  .zone-plus .dyn-tag{color:#a9c4ff}
+  .zone-aspirational .dyn-tag{color:var(--gold)}
+  .zone-golden .dyn-tag{color:var(--amber)}
+  .dyn-head h3{margin:0;font-size:20px;letter-spacing:.2px;color:var(--ink)}
+  .dyn-price-row{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:18px;padding-bottom:18px;border-bottom:1px dashed var(--line)}
+  .dyn-price-block{display:flex;flex-direction:column;gap:2px}
+  .dyn-lab{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+  .dyn-price{font-size:46px;font-weight:800;letter-spacing:.3px;line-height:1;margin-top:4px}
+  .dyn-ppsf{font-size:13px;color:var(--muted);margin-top:6px}
+  .dyn-vs-market{font-size:13px;color:var(--ink);background:#0b1622;border:1px solid var(--line);border-radius:8px;padding:9px 14px;font-weight:600}
+  .dyn-slider-wrap{margin:6px 0 18px}
+  .dyn-slider-labels{display:flex;justify-content:space-between;font-size:10.5px;color:var(--muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:.6px}
+  #dynAdj{width:100%;height:8px;background:#1d3247;border-radius:99px;-webkit-appearance:none;outline:none}
+  #dynAdj::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--ink);border:3px solid #0b1622;cursor:pointer;box-shadow:0 0 0 1px var(--accent)}
+  .dyn-slider-current{font-size:12.5px;color:var(--muted);margin-top:8px;text-align:center}
+  .dyn-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+  @media (max-width:780px){ .dyn-stats{grid-template-columns:repeat(2,1fr)} }
+  .dyn-stat{background:#0b1622;border:1px solid var(--line);border-radius:10px;padding:11px 13px}
+  .dyn-stat-lab{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.6px}
+  .dyn-stat-val{font-size:18px;font-weight:700;margin-top:3px;color:var(--ink)}
+  .dyn-narrative{background:#0b1622;border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:10px;padding:14px 17px;font-size:13.5px;color:var(--ink);line-height:1.6}
+  .zone-loss .dyn-narrative{border-left-color:#9c8a4a}
+  .zone-aggressive .dyn-narrative{border-left-color:var(--green)}
+  .zone-market .dyn-narrative{border-left-color:var(--accent)}
+  .zone-plus .dyn-narrative{border-left-color:#6a8acc}
+  .zone-aspirational .dyn-narrative{border-left-color:var(--gold)}
+  .zone-golden .dyn-narrative{border-left-color:var(--amber)}
+
+  /* Lightbox */
+  .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.93);z-index:100;display:none;align-items:center;justify-content:center;padding:40px;flex-direction:column;gap:14px}
+  .lightbox.open{display:flex}
+  .lightbox img{max-width:95vw;max-height:85vh;border-radius:8px}
+  .lightbox .close{position:absolute;top:20px;right:24px;background:none;border:none;color:#fff;font-size:32px;cursor:pointer}
+  .lightbox .nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);color:#fff;font-size:28px;padding:8px 16px;border-radius:8px;cursor:pointer}
+  .lightbox .nav.prev{left:24px}
+  .lightbox .nav.next{right:24px}
+  .lightbox .counter{color:#fff;font-size:13px}
+
+  /* ---------- Code gate (admin) ---------- */
+  .gate{position:fixed;inset:0;background:linear-gradient(180deg,#08111b 0%,#0b1622 100%);z-index:1000;display:flex;align-items:center;justify-content:center;padding:24px}
+  .gate-box{background:#0e1c2a;border:1px solid var(--teal);border-radius:18px;padding:42px 44px;max-width:480px;width:100%;text-align:center;box-shadow:0 0 60px rgba(30,192,192,.18)}
+  .gate-box img{height:120px;width:auto;margin-bottom:16px;filter:drop-shadow(0 0 22px rgba(30,192,192,.4))}
+  .gate-brand{font-family:'Montserrat',sans-serif;font-size:11px;letter-spacing:3.6px;color:var(--teal-glow);font-weight:600;text-transform:uppercase;margin-bottom:8px}
+  .gate-title{font-family:'Montserrat',sans-serif;font-size:22px;color:var(--ink);font-weight:700;margin:0 0 6px}
+  .gate-sub{font-size:13px;color:var(--muted);margin-bottom:24px;line-height:1.55}
+  .gate input{width:100%;background:#0b1622;border:1px solid var(--line);border-radius:10px;color:var(--ink);font-family:'Montserrat',sans-serif;font-size:18px;padding:14px 16px;text-align:center;letter-spacing:2.5px;text-transform:uppercase;outline:none}
+  .gate input:focus{border-color:var(--teal-glow);box-shadow:0 0 0 3px rgba(30,192,192,.2)}
+  .gate button{margin-top:14px;width:100%;background:linear-gradient(135deg,var(--teal) 0%,var(--teal-dark) 100%);border:none;color:#fff;font-family:'Montserrat',sans-serif;font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;padding:14px;border-radius:10px;cursor:pointer;transition:transform .15s, box-shadow .15s}
+  .gate button:hover{transform:translateY(-1px);box-shadow:0 6px 22px rgba(17,144,144,.35)}
+  .gate-error{margin-top:12px;font-size:12.5px;color:#ff6b6b;min-height:18px}
+  .gate-admin-badge{display:inline-block;margin-top:6px;padding:3px 10px;border-radius:99px;background:#5a4a1c;color:#ffda88;border:1px solid #8a711f;font-family:'Montserrat',sans-serif;font-size:9.5px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px}
+  .gate-foot{margin-top:22px;padding-top:16px;border-top:1px solid var(--line);font-size:11px;color:var(--muted)}
+
+  /* hide main content until unlocked */
+  body.locked main, body.locked header, body.locked .hero-callout-wrap{visibility:hidden}
+</style>
+</head>
+<body class="locked">
+
+<!-- ============ ACCESS GATE (ADMIN) ============ -->
+<div class="gate" id="accessGate">
+  <div class="gate-box">
+    <img src="photos/seahorse-logo.png" alt="The Newcomer Group seahorse"/>
+    <div class="gate-brand">The Newcomer Group</div>
+    <h2 class="gate-title">Pricing Analysis Dashboard</h2>
+    <div class="gate-admin-badge">★ Admin Access</div>
+    <div class="gate-sub" style="margin-top:12px">5824 Rudolph Avenue · St Augustine, FL 32080<br/>Enter your admin access code to load the dashboard.</div>
+    <form id="gateForm" autocomplete="off">
+      <input id="codeInput" type="text" maxlength="40" placeholder="Admin access code" autofocus/>
+      <button type="submit">Unlock Admin Dashboard</button>
+    </form>
+    <div class="gate-error" id="gateError"></div>
+    <div class="gate-foot">This view includes editable comps and the data-export button. Not for client distribution.</div>
+  </div>
+</div>
+
+<header>
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap">
+    <div style="display:flex;align-items:center;gap:18px">
+      <img src="photos/seahorse-logo.png" alt="The Newcomer Group seahorse" style="height:78px;width:auto;filter:drop-shadow(0 0 14px rgba(30,192,192,.35))"/>
+      <div>
+        <div style="font-family:'Montserrat',sans-serif;font-size:11px;letter-spacing:3.6px;color:var(--teal-glow);font-weight:600;text-transform:uppercase;margin-bottom:2px">The Newcomer Group</div>
+        <h1 style="margin:0;font-size:24px;color:var(--ink)">Comparative Market Analysis</h1>
+        <div class="sub" style="margin-top:4px">5824 Rudolph Avenue · St Augustine, FL 32080 · Butlers Beach · Anastasia Island · Prepared 9 April 2026</div>
+      </div>
+    </div>
+    <div style="text-align:right;border:1px solid var(--teal);border-radius:10px;padding:10px 16px;background:#0e1c2a">
+      <div style="font-family:'Montserrat',sans-serif;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.4px">Internal use</div>
+      <div style="font-family:'Montserrat',sans-serif;font-size:14px;font-weight:700;color:var(--teal-glow);letter-spacing:.4px">ADMIN VIEW</div>
+      <div style="font-size:10.5px;color:var(--muted);margin-top:2px">Editable · do not share file</div>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO VALUE CALLOUT ============ -->
+<section style="max-width:1500px;margin:24px auto 0;padding:0 32px">
+  <div style="background:linear-gradient(135deg,#1a3b2a 0%,#0e1c2a 55%,#2a2416 100%);border:1px solid var(--gold);border-radius:16px;padding:24px 28px;position:relative;overflow:hidden">
+    <div style="position:absolute;top:14px;right:20px;font-size:10px;color:var(--gold);letter-spacing:1.6px;text-transform:uppercase;font-weight:700">★ Why this home is exceptional</div>
+    <div style="font-size:22px;font-weight:700;color:var(--ink);line-height:1.35;margin:6px 0 10px;max-width:1100px">
+      Priced correctly, 5824 Rudolph is one of the most valuable properties on Anastasia Island right now — and the market is moving away from it every month it sits.
+    </div>
+    <div style="font-size:13.5px;color:var(--ink);line-height:1.6;max-width:1100px">
+      This is a rare <b>5-bedroom, 3.5-bath oceanside home</b> with panoramic Atlantic and Intracoastal views from <i>all three floors</i>, on a quiet dead-end street, one block to the surf, with <b>no HOA and no CDD</b>. It was meticulously remodeled in 2019 with no expense spared. The anchor comp — <b>5730 Rudolph, same street</b> — went pending in just <b>15 days at $742/sqft</b>, and is 700 sqft smaller than the subject. The blended 6-comp model lands the subject's fair value at <b>~$1.60M</b>, while the anchor $/sqft alone signals closer to $2.0M — meaning the pricing strategy carries real upside if you execute the aggressive / bidding-war play. Since the owner's 2021 purchase at $1.028M, the micro-market has run at an implied <b>~9.3% CAGR</b>, and the appreciation curve continues to outrun the price the home would attract on a slow, aspirational list. <b>The right move is to price for velocity, not patience.</b> A tightly priced list at the aggressive end of the band should see multiple offers in the first two weeks and clear at or above the implied market value.
+    </div>
+  </div>
+</section>
+
+<main>
+
+  <!-- ============ SECTION 1: SUBJECT PROPERTY ============ -->
+  <section class="section" id="subject-section">
+    <h2>Subject Property</h2>
+    <div class="subject-grid">
+      <div>
+        <div class="photo-gallery" id="gallery"></div>
+        <div class="photo-caption">5 listing photos · faces blurred for privacy · click any image to enlarge</div>
+        <div style="margin-top:8px;padding:8px 11px;background:#3a2a14;border-left:3px solid var(--amber);border-radius:4px;font-size:11px;color:#ffd89b;line-height:1.45">
+          <b>Heads up on Zillow links:</b> the Zillow zpid page and "Zillow ↗" links on the comp cards below all point to <b>older listings</b> of this property (pre-2019 remodel configurations with fewer bedrooms, lower prices, and different photos). They are useful for historical context but <b>do not reflect the current post-remodel property</b>. Authoritative bed/bath count, sqft, and post-remodel condition come from the 2020–21 Paragon MLS listings (#196936 / #197833).
+        </div>
+      </div>
+      <div>
+        <div class="kv">
+          <div class="k">Address</div><div class="v"><b>5824 Rudolph Ave</b></div>
+          <div class="k">City / Zip</div><div class="v">St Augustine, FL 32080</div>
+          <div class="k">Subdivision</div><div class="v">Butlers Beach (Area 07)</div>
+          <div class="k">Type</div><div class="v">Single Family · 3 stories · Block · "Meticulously remodeled 2019"</div>
+          <div class="k">Bed / Bath</div><div class="v"><b>5 BR · 3 full + 1 half BA</b> <span class="small">(confirmed by Paragon MLS #197833, 2020 post-remodel listing)</span></div>
+          <div class="k">Living Area</div><div class="v"><b>2,720</b> sqft · $/sqft @ last sale = $378</div>
+          <div class="k">Other Area</div><div class="v">880 sqft (garage / storage)</div>
+          <div class="k">Lot</div><div class="v">50 × 100 (≈ 0.11 ac) · quiet dead-end street</div>
+          <div class="k">Year Built</div><div class="v">2005 · remodeled 2019</div>
+          <div class="k">Waterfront</div><div class="v">Ocean & Intracoastal views from all 3 floors · ≈1 block to surf</div>
+          <div class="k">Zoning</div><div class="v">RG-2</div>
+          <div class="k">HOA / CDD</div><div class="v">None / None</div>
+          <div class="k">Parcel ID</div><div class="v">179400-0240</div>
+          <div class="k">Last sale</div><div class="v">$1,028,000 · 21 Apr 2021</div>
+          <div class="k">Prior sale</div><div class="v">$620,000 · 19 Oct 2018</div>
+          <div class="k">2020 list history</div><div class="v" style="font-size:12px">MLS #196936 listed $1,284,500 (Aug 2020, withdrawn) → MLS #197833 repriced $1,139,000 (Nov 2020, withdrawn Feb 2021) → off-market sale $1,028,000 (Apr 2021)</div>
+        </div>
+        <div class="zestimate-box">
+          <div class="cell">
+            <div class="lab">Zillow Zestimate®</div>
+            <div class="val">$1,095,000</div>
+            <div class="small" style="font-size:10.5px">Likely lagging the micro-market</div>
+          </div>
+          <div class="cell">
+            <div class="lab">Implied Value (live model)</div>
+            <div class="val" id="impliedValueCell">—</div>
+            <div class="small" style="font-size:10.5px">Blended 6-comp model · updates with edits below</div>
+          </div>
+        </div>
+        <div class="footnote">Sources: Paragon MLS (BORMLS) historical listings #197833 / #196936 (2020-21 post-remodel) · St Johns County Property Appraiser · public deed records · <a href="https://www.zillow.com/homedetails/5824-Rudolph-Ave-Saint-Augustine-FL-32080/70805815_zpid/" target="_blank">Zillow zpid 70805815</a> <span style="color:var(--amber)">(historical listing — pre-remodel data, do not rely on)</span>. <b>Price trajectory:</b> $1,028k (Apr 2021) → current modeled value ~$1.60M implies <b>≈ 9.3% CAGR</b> over 5 years — consistent with the Anastasia Island beachside boom of 2021–2024.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 2: COMPARABLES ============ -->
+  <section class="section" id="comps-section">
+    <h2>Comparable Sales<span class="count">· 6 Paragon comps · Anastasia Island Area 07 · last 6 months</span></h2>
+    <div class="small" style="margin-bottom:14px">Live pull from Paragon MLS (BORMLS) on 9 April 2026. Filters: St Johns County, Area 07, SFR, $850k–$1.8M, 2,000–3,500 sqft, 3+ BR. The editable table below powers the valuation model — edit any cell and the strategy cards recalculate. <span style="color:var(--amber)">Note: the "Zillow ↗" link on each card opens a search, not necessarily the current listing — historical Zillow pages often reflect older configurations of the same property.</span></div>
+
+    <div class="comp-cards" id="compCards"></div>
+
+    <h2 style="margin-top:26px">Editable Comp Table<span class="count">(drives the valuation model)</span></h2>
+    <table id="compTable">
+      <thead>
+        <tr>
+          <th>Address</th>
+          <th>Status</th>
+          <th class="num">Price</th>
+          <th class="num">SqFt</th>
+          <th class="num">$ / SqFt</th>
+          <th class="num">Months ago</th>
+          <th class="num">Adj $ / SqFt</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="compBody"></tbody>
+    </table>
+    <div class="row-tools">
+      <button class="btn" id="addRow">+ Add comp</button>
+      <button class="btn" id="resetComps">Reset to Paragon defaults</button>
+      <button class="btn" id="exportData" style="background:#0e3a3a;border-color:var(--teal);color:var(--teal-glow);font-weight:600">↓ Save &amp; Export Data (cma-data.js)</button>
+    </div>
+    <div class="small" style="margin-top:8px;color:var(--muted)">After exporting, replace <code style="background:#0b1622;padding:1px 5px;border-radius:3px;color:var(--teal-glow)">cma-data.js</code> in this folder. The client view will pick up the new data the next time it's opened.</div>
+    <div class="footnote"><b>Anchor comp:</b> 5730 Rudolph Ave — same street, same Butlers Beach subdivision — went pending at $1,495,000 after just 15 days on market. It's only 2,016 sqft vs the subject's 2,720 sqft, meaning the subject has ~700 more sqft of oceanside living area to price into its list. <b>Closest size match:</b> 6525 Broward St (Ocean Grove, 2,763 sqft) closed at $1,572,500 in 8 days on 2/9/2026 — that's the cleanest $/sqft proxy for the subject. <b>Excluded from defaults:</b> Area 08 (Summer Island / Matanzas south), Area 02S (Vilano Beach / wrong side of Bridge of Lions), and 440+ DOM stale listings (10 3rd St, 5 D St) whose prices carry no market signal.</div>
+  </section>
+
+  <!-- ============ SECTION 3: PRICING STRATEGY ============ -->
+  <section class="section" id="strategies-section">
+    <h2>Pricing Strategy<span class="count">· move the slider · everything below updates in real time</span></h2>
+
+    <div class="market-value-bar">
+      <div>
+        <div class="small">Blended adj. $/sqft</div>
+        <div class="big" id="avgPpsf">—</div>
+      </div>
+      <div>
+        <div class="small">× Subject 2,720 sqft</div>
+        <div class="big" id="impliedValue">—</div>
+      </div>
+      <div>
+        <div class="small">Implied $/sqft @ subject</div>
+        <div class="med" id="subjectPpsf">—</div>
+      </div>
+    </div>
+
+    <!-- DYNAMIC SINGLE STRATEGY PANEL -->
+    <div id="dynStrategy" class="dyn-panel">
+      <div class="dyn-head">
+        <span class="dyn-tag" id="dynTag">STRATEGY</span>
+        <h3 id="dynTitle">—</h3>
+      </div>
+
+      <div class="dyn-price-row">
+        <div class="dyn-price-block">
+          <div class="dyn-lab">Recommended List Price</div>
+          <div class="dyn-price" id="dynPrice">—</div>
+          <div class="dyn-ppsf" id="dynPpsf">—</div>
+        </div>
+        <div class="dyn-vs-market" id="dynVsMarket">—</div>
+      </div>
+
+      <div class="dyn-slider-wrap">
+        <div class="dyn-slider-labels">
+          <span>−15% · Loss-leader</span>
+          <span>0% · Implied market</span>
+          <span>+35% · Golden price</span>
+        </div>
+        <input type="range" id="dynAdj" min="-15" max="35" step="0.5" value="-8"/>
+        <div class="dyn-slider-current">List adjustment vs implied market value: <b id="dynAdjLabel">−8.0%</b></div>
+      </div>
+
+      <div class="dyn-stats">
+        <div class="dyn-stat"><div class="dyn-stat-lab">Expected DOM</div><div class="dyn-stat-val" id="dynDom">—</div></div>
+        <div class="dyn-stat"><div class="dyn-stat-lab">Likely # of offers</div><div class="dyn-stat-val" id="dynOffers">—</div></div>
+        <div class="dyn-stat"><div class="dyn-stat-lab">Likely close price</div><div class="dyn-stat-val" id="dynClose">—</div></div>
+        <div class="dyn-stat"><div class="dyn-stat-lab">Close vs market</div><div class="dyn-stat-val" id="dynCloseVs">—</div></div>
+      </div>
+
+      <div class="dyn-narrative" id="dynNarrative">—</div>
+    </div>
+  </section>
+
+  <!-- ============ SECTION 4: METHODOLOGY ============ -->
+  <section class="section">
+    <h2>How the model works</h2>
+    <div class="small">
+      <p style="margin:6px 0">1. <b>Comp normalization.</b> Each Paragon comp's sale or list price is converted to <b>$/sqft</b>, then time-adjusted forward to today using a fixed Anastasia Island appreciation rate of <b>9% / yr</b>. (That rate is calibrated to the actual 9.3% CAGR observed on the subject property between its 2021 purchase at $1.028M and today's modeled value of ~$1.60M.) A sale that closed 6 months ago is bumped up by ~4.4%, a sale from 12 months ago by 9%, etc.</p>
+      <p style="margin:6px 0">2. <b>Implied market value.</b> The mean of those adjusted $/sqft figures is multiplied by the subject's <b>2,720 sqft</b> to produce a single blended fair-value number. You'll see it in the "Implied Value (live model)" cell at the top of the Subject Property panel and in the metrics row of the Pricing Strategy section. <b>Edit any cell in the comp table and this number recalculates instantly.</b></p>
+      <p style="margin:6px 0">3. <b>Single dynamic strategy panel.</b> The Pricing Strategy section uses one slider that runs from −15% (loss-leader) to +35% (golden price). As you move the slider, the recommended list price, $/sqft, expected days-on-market, expected offer count, likely close price, and the strategic narrative all update in real time. The panel's color and the heading change to reflect which "zone" the slider is in:</p>
+      <p style="margin:6px 0;padding-left:18px">• <b>−15% to −10% · Loss-Leader</b> — fastest sale, but you give up real money<br/>
+      • <b>−10% to −5% · Aggressive</b> — bidding-war play, recommended starting position<br/>
+      • <b>−5% to +3% · At Market</b> — clean sale, no drama, no upside<br/>
+      • <b>+3% to +10% · Market Plus</b> — slightly above the comp band, normal cycle<br/>
+      • <b>+10% to +22% · Aspirational</b> — patient list for the right cash buyer<br/>
+      • <b>+22% to +35% · Golden Price</b> — lottery ticket, long DOM, not recommended</p>
+      <p style="margin:6px 0">4. <b>Outcome heuristics</b> (DOM, offer count, close price haircut) are calibrated to recent Anastasia Island Area 07 second-home behavior: aggressive lists at &gt;6% under fair value typically clear at or above the implied market in 7–21 days; lists at 15%+ over fair value typically take 6+ months and need at least one price cut, with the eventual close usually 5–15% below list.</p>
+      <p style="margin:6px 0">5. <b>Anchor signal vs blended model.</b> The blended 6-comp model lands at ~$1.60M today. The single best one-to-one comparable — 5730 Rudolph (same street, same Butlers Beach pocket, pending in 15 days) — implies closer to <b>$2.0M</b> when you scale its $742/sqft up to the subject's 2,720 sqft. Wherever you set the slider, that $2.0M anchor signal is the upper guardrail to keep in mind: it's the reason the aggressive play is genuinely aggressive, not foolish.</p>
+    </div>
+
+    <div style="margin-top:22px;padding-top:18px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
+      <div style="font-size:11.5px;color:var(--muted);line-height:1.6;max-width:900px">
+        This comparative market analysis was prepared as a private client advisory document. All data is sourced from Paragon MLS (BORMLS), the St Johns County Property Appraiser, and public deed records. Figures should be used as directional inputs for pricing strategy, not as an appraisal or guarantee of market outcome. All listing photos have had faces blurred for privacy. Dashboard date: 9 April 2026.
+      </div>
+      <div style="display:flex;align-items:center;gap:14px;border:1px solid var(--teal);border-radius:10px;padding:10px 18px 10px 12px;background:#0e1c2a">
+        <img src="photos/seahorse-logo.png" alt="The Newcomer Group seahorse" style="height:54px;width:auto"/>
+        <div>
+          <div style="font-family:'Montserrat',sans-serif;font-size:9.5px;color:var(--muted);text-transform:uppercase;letter-spacing:1.4px">Prepared by</div>
+          <div style="font-family:'Montserrat',sans-serif;font-size:13px;font-weight:700;color:var(--teal-glow);letter-spacing:.3px;text-transform:uppercase">The Newcomer Group</div>
+          <div style="font-size:10.5px;color:var(--muted);margin-top:1px">Your St Augustine real estate experts</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Lightbox -->
+<div class="lightbox" id="lightbox">
+  <button class="close" onclick="closeLightbox()">×</button>
+  <button class="nav prev" onclick="navLightbox(-1)">‹</button>
+  <img id="lightboxImg" src=""/>
+  <div class="counter" id="lightboxCounter"></div>
+  <button class="nav next" onclick="navLightbox(1)">›</button>
+</div>
+
+<!-- Shared data file — same file used by the client view. Edit comps here, click "Save & Export Data", and replace this file. -->
+<script src="cma-data.js"></script>
+<script>
+// ============ ADMIN ACCESS GATE ============
+// SHA-256 of the admin access code. To change the code, generate a new SHA-256
+// hash of the new plaintext code (uppercase) and replace below.
+// Default admin code: NEWCOMER-ADMIN-2026
+const ACCESS_HASH = "758acac5e666b7ea97f6f804c050ab8c034e8018a6970063852992e63eea26ed";
+
+async function sha256Hex(str){
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+
+document.getElementById("gateForm").addEventListener("submit", async (e)=>{
+  e.preventDefault();
+  const errEl = document.getElementById("gateError");
+  errEl.textContent = "";
+  const input = document.getElementById("codeInput").value.trim().toUpperCase();
+  if(!input){ errEl.textContent = "Please enter your admin access code."; return; }
+  try{
+    const h = await sha256Hex(input);
+    if(h === ACCESS_HASH){
+      document.getElementById("accessGate").style.display = "none";
+      document.body.classList.remove("locked");
+      try{ sessionStorage && sessionStorage.setItem("cma_admin_unlocked","1"); }catch(_){}
+    } else {
+      errEl.textContent = "Invalid admin access code. Please try again.";
+    }
+  }catch(err){
+    errEl.textContent = "Error verifying code. Please refresh and retry.";
+  }
+});
+
+// Auto-unlock within the same tab session if already verified
+try{
+  if(sessionStorage && sessionStorage.getItem("cma_admin_unlocked") === "1"){
+    document.getElementById("accessGate").style.display = "none";
+    document.body.classList.remove("locked");
+  }
+}catch(_){}
+
+// Pull subject metadata from the shared data file (with safe defaults).
+const SUBJECT_SQFT = (window.CMA_DATA && window.CMA_DATA.subject && window.CMA_DATA.subject.sqft) || 2720;
+const APPRECIATION_FROM_DATA = (window.CMA_DATA && window.CMA_DATA.subject && window.CMA_DATA.subject.appreciationRate) || 0.09;
+
+// 5 listing photos selected by client (faces blurred for privacy)
+const SUBJECT_PHOTOS = [
+  "photos/subject_5.jpg",  // Front of 3-story home with ocean
+  "photos/subject_3.jpg",  // Aerial with location pin
+  "photos/subject_4.jpg",  // Deck with ocean view
+  "photos/subject_2.jpg",  // Kitchen with island
+  "photos/subject_1.jpg"   // Master bathroom
+];
+
+// Build photo gallery: hero + 4 thumbs
+(() => {
+  const g = document.getElementById("gallery");
+  const hero = document.createElement("div");
+  hero.className = "hero";
+  hero.style.backgroundImage = `url("${SUBJECT_PHOTOS[0]}")`;
+  hero.onclick = () => openLightbox(0);
+  g.appendChild(hero);
+  SUBJECT_PHOTOS.slice(1, 5).forEach((url, i) => {
+    const t = document.createElement("div");
+    t.className = "thumb";
+    t.style.backgroundImage = `url("${url}")`;
+    t.onclick = () => openLightbox(i + 1);
+    if (i === 3 && SUBJECT_PHOTOS.length > 5) {
+      t.style.position = "relative";
+      const overlay = document.createElement("div");
+      overlay.style.cssText = "position:absolute;inset:0;background:rgba(0,0,0,.6);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:14px;border-radius:8px";
+      overlay.textContent = `+${SUBJECT_PHOTOS.length - 4} more`;
+      t.appendChild(overlay);
+    }
+    g.appendChild(t);
+  });
+})();
+
+// Lightbox
+let lbIdx = 0;
+function openLightbox(i){ lbIdx = i; document.getElementById("lightboxImg").src = SUBJECT_PHOTOS[i]; document.getElementById("lightboxCounter").textContent = `${i+1} / ${SUBJECT_PHOTOS.length}`; document.getElementById("lightbox").classList.add("open"); }
+function closeLightbox(){ document.getElementById("lightbox").classList.remove("open"); }
+function navLightbox(d){ lbIdx = (lbIdx + d + SUBJECT_PHOTOS.length) % SUBJECT_PHOTOS.length; openLightbox(lbIdx); }
+document.addEventListener("keydown", e => {
+  if (!document.getElementById("lightbox").classList.contains("open")) return;
+  if (e.key === "Escape") closeLightbox();
+  if (e.key === "ArrowLeft") navLightbox(-1);
+  if (e.key === "ArrowRight") navLightbox(1);
+});
+
+// ========== COMPS ==========
+// Paragon thumbnail URL pattern: /ParagonImages/Property/PL/BORMLS/{MLS}/0/120/90/{hash1}/1/{hash2}/{file}.JPG
+// Higher-res by swapping /120/90/ -> /800/600/ (works when user is logged into Paragon)
+function hiRes(url){ return url.replace('/0/120/90/', '/0/800/600/'); }
+
+const zillowSearch = addr => `https://www.zillow.com/homes/${encodeURIComponent(addr.replace(/\s+/g,'-'))}_rb/`;
+
+const FALLBACK_COMPS = [
+  {
+    addr: "5730 Rudolph Ave",
+    subdivision: "Butlers Beach · Area 07",
+    city: "Saint Augustine FL 32080",
+    status: "Pending",
+    price: 1495000,
+    sqft: 2016,
+    beds: 4,
+    baths: 4,
+    dom: 15,
+    monthsAgo: 0.5,
+    mls: "261400",
+    photo: "https://zimg.paragon.ice.com/ParagonImages/Property/PL/BORMLS/261400/0/120/90/eec13d6e0227146f6602246379567ab8/1/a7e89d7bd454780770c48a9284450623/261400-7B81E3B8-D64D-4B2A-BD1C-BFFDB858C902.JPG",
+    anchor: true
+  },
+  {
+    addr: "6525 Broward St",
+    subdivision: "Ocean Grove · Area 07",
+    city: "Saint Augustine FL 32080",
+    status: "Closed",
+    price: 1572500,
+    sqft: 2763,
+    beds: 4,
+    baths: 4,
+    dom: 8,
+    closingDate: "2/9/2026",
+    monthsAgo: 2,
+    mls: "260033",
+    photo: "https://zimg.paragon.ice.com/ParagonImages/Property/PL/BORMLS/260033/0/120/90/5255b824a42649b63eae4d78801abab0/1/25a078a645262f6646c0f2f6cde03a2e/260033-2D84DA23-0D29-49EF-B35E-8F613BC9BB5F.JPG"
+  },
+  {
+    addr: "110 7th Street",
+    subdivision: "Chatauqua Beach · Area 07",
+    city: "Saint Augustine Beach FL 32080",
+    status: "Closed",
+    price: 1600000,
+    sqft: 3246,
+    beds: 5,
+    baths: 6,
+    dom: 57,
+    closingDate: "3/23/2026",
+    monthsAgo: 0.5,
+    mls: "260293",
+    photo: "https://zimg.paragon.ice.com/ParagonImages/Property/PL/BORMLS/260293/0/120/90/216dd3af377af9e88206aed9a0b69a49/1/a81fdb8a0793ef2b5fab091a10b3c699/260293-b4e3dbcb-3b91-4239-94b8-7fc08edeac96.JPG"
+  },
+  {
+    addr: "4969 Alta Vista Ave",
+    subdivision: "Biera Mar · Area 07",
+    city: "Saint Augustine FL 32080",
+    status: "Closed",
+    price: 1300000,
+    sqft: 2092,
+    beds: 5,
+    baths: 3.5,
+    dom: 63,
+    closingDate: "1/23/2026",
+    monthsAgo: 2.5,
+    mls: "256056",
+    photo: "https://zimg.paragon.ice.com/ParagonImages/Property/PL/BORMLS/256056/0/120/90/714a28694ca00b31a6effeca65c9319f/1/9072c45e41cb8df21e30ec3e0aaa99b4/256056-5b0b7f77-80d7-4fd9-80c2-22272a001802.JPG"
+  },
+  {
+    addr: "5599 Pelican Way",
+    subdivision: "Anastasia Hills · Area 07",
+    city: "Saint Augustine FL 32080",
+    status: "Active",
+    price: 1698000,
+    sqft: 2539,
+    beds: 4,
+    baths: 3.5,
+    dom: 68,
+    monthsAgo: 0,
+    mls: "260663",
+    photo: "https://zimg.paragon.ice.com/ParagonImages/Property/PL/BORMLS/260663/0/120/90/d3b2ae4cda85cf936272f604259db014/1/42683c8ac23d5cff934a61a455ac5b20/260663-a651c5c4-0029-4f11-9bdd-9ef528ed1686.JPG"
+  },
+  {
+    addr: "9106 Mellon Ct",
+    subdivision: "Matanzas Inlet Bch · Area 07",
+    city: "Saint Augustine FL 32080",
+    status: "Active",
+    price: 1100000,
+    sqft: 2580,
+    beds: 4,
+    baths: 3.5,
+    dom: 23,
+    monthsAgo: 0,
+    mls: "261257",
+    photo: "https://zimg.paragon.ice.com/ParagonImages/Property/PL/BORMLS/261257/0/120/90/fd2df6500925594424d9e26b3213efc3/1/bcfabff2d8ae0d076267c3263c507791/261257-7eca7d02-3b19-4b9c-bd5a-6ed7ea0d5499.JPG"
+  }
+];
+
+// Prefer the shared cma-data.js source of truth; fall back to the embedded list
+// only if the shared file is missing (e.g. opened from a different folder).
+const DEFAULT_COMPS = (window.CMA_DATA && Array.isArray(window.CMA_DATA.comps) && window.CMA_DATA.comps.length)
+  ? window.CMA_DATA.comps
+  : FALLBACK_COMPS;
+
+let comps = JSON.parse(JSON.stringify(DEFAULT_COMPS));
+
+function fmt$(n){ if(!isFinite(n)) return "—"; return "$"+Math.round(n).toLocaleString(); }
+function fmtPct(n,d=1){ return (n>=0?"+":"")+n.toFixed(d)+"%"; }
+
+// Anastasia Island appreciation rate used for time-adjusting comps.
+// Default 9% calibrated to the historical 9.3% CAGR of the subject property
+// since its 2021 sale; can be overridden by cma-data.js → subject.appreciationRate.
+const APPRECIATION = APPRECIATION_FROM_DATA;
+
+function adjustedPpsf(comp){
+  const yrs = comp.monthsAgo/12;
+  const factor = Math.pow(1+APPRECIATION, yrs);
+  return (comp.price / comp.sqft) * factor;
+}
+
+// Render comparable cards
+function renderCards(){
+  const wrap = document.getElementById("compCards");
+  wrap.innerHTML = "";
+  comps.forEach(c => {
+    const ppsf = c.price / c.sqft;
+    const statusClass = (c.status||"").toLowerCase().replace(/[^a-z]/g,'');
+    const card = document.createElement("div");
+    card.className = "comp-card";
+    card.innerHTML = `
+      <div class="img ${c.anchor ? 'anchor' : ''}" style="background-image:url('${hiRes(c.photo||'')}')">
+        <div class="status-badge ${statusClass.startsWith('c')?'closed':statusClass.startsWith('p')?'pending':'active'}">${c.status||''}</div>
+      </div>
+      <div class="body">
+        <div class="addr">${c.addr}</div>
+        <div class="sub">${c.subdivision||''} · ${c.city||''}</div>
+        <div class="price">${fmt$(c.price)}</div>
+        <div class="ppsf">$${Math.round(ppsf).toLocaleString()}/sqft${c.closingDate?` · closed ${c.closingDate}`:''}</div>
+        <div class="meta">
+          <span>${c.beds||'-'} BR</span>
+          <span>${c.baths||'-'} BA</span>
+          <span>${(c.sqft||0).toLocaleString()} sqft</span>
+          <span>${c.dom||0} DOM</span>
+        </div>
+        <div class="links">
+          <a href="${zillowSearch(c.addr+' '+(c.city||''))}" target="_blank">Zillow ↗</a>
+          <span style="font-size:11px;color:var(--muted);flex:1;text-align:center;padding:5px;background:#16293c;border-radius:5px;border:1px solid var(--line)">MLS #${c.mls||'—'}</span>
+        </div>
+      </div>`;
+    wrap.appendChild(card);
+  });
+}
+
+// Render editable table
+function renderTable(){
+  const tb = document.getElementById("compBody");
+  tb.innerHTML = "";
+  comps.forEach((c,i)=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><input data-i="${i}" data-f="addr" value="${c.addr}"/></td>
+      <td><input data-i="${i}" data-f="status" value="${c.status}" style="width:85px"/></td>
+      <td><input data-i="${i}" data-f="price" class="num" value="${c.price}"/></td>
+      <td><input data-i="${i}" data-f="sqft" class="num" value="${c.sqft}"/></td>
+      <td class="num" id="raw_${i}"></td>
+      <td><input data-i="${i}" data-f="monthsAgo" class="num" value="${c.monthsAgo}" style="width:60px"/></td>
+      <td class="num" id="adj_${i}"></td>
+      <td><button class="btn" data-del="${i}">×</button></td>`;
+    tb.appendChild(tr);
+  });
+  tb.querySelectorAll("input").forEach(inp=>{
+    inp.addEventListener("input", e=>{
+      const i = +e.target.dataset.i;
+      const f = e.target.dataset.f;
+      const v = (f==="addr"||f==="status")? e.target.value : parseFloat(e.target.value)||0;
+      comps[i][f] = v;
+      recalc();
+      renderCards();
+    });
+  });
+  tb.querySelectorAll("button[data-del]").forEach(btn=>{
+    btn.addEventListener("click", e=>{
+      comps.splice(+e.target.dataset.del,1);
+      renderTable(); renderCards(); recalc();
+    });
+  });
+}
+
+function recalc(){
+  let sumAdj = 0, n = 0;
+  comps.forEach((c,i)=>{
+    const raw = c.price / c.sqft;
+    const adj = adjustedPpsf(c);
+    const rawCell = document.getElementById("raw_"+i);
+    const adjCell = document.getElementById("adj_"+i);
+    if(rawCell) rawCell.textContent = "$"+Math.round(raw).toLocaleString();
+    if(adjCell) adjCell.textContent = "$"+Math.round(adj).toLocaleString();
+    if(isFinite(adj)){ sumAdj += adj; n++; }
+  });
+  const avg = n ? sumAdj/n : 0;
+  document.getElementById("avgPpsf").textContent = "$"+Math.round(avg).toLocaleString()+"/sqft";
+  const implied = avg * SUBJECT_SQFT;
+  document.getElementById("impliedValue").textContent = fmt$(implied);
+  document.getElementById("subjectPpsf").textContent = "$"+Math.round(implied/SUBJECT_SQFT).toLocaleString()+"/sqft";
+  // Mirror the implied value into the Subject Property zestimate-box cell
+  const ivCell = document.getElementById("impliedValueCell");
+  if(ivCell) ivCell.textContent = fmt$(implied);
+
+  renderDynStrategy(implied);
+}
+
+// ============ DYNAMIC SINGLE STRATEGY PANEL ============
+// Maps a slider position to: zone, narrative, expected DOM, offer count, close price.
+function strategyZone(adjPct){
+  if(adjPct <= -10) return {
+    key:"loss", tag:"LOSS-LEADER", title:"Loss-Leader · Leaving Money on the Table",
+    narrative:`Pricing this far under fair value triggers a feeding-frenzy that you don't actually need at this price point. You'll get 4–7 offers in 7–10 days, but the bidding ceiling is set by what buyers <i>think</i> is reasonable, not by what the property is actually worth. Result: a fast close, but the market signal from 5730 Rudolph (~$742/sqft, 15 DOM) tells us you're walking away from real money. <b>Reset to ~−8% for the cleanest aggressive play.</b>`
+  };
+  if(adjPct <= -5) return {
+    key:"aggressive", tag:"AGGRESSIVE", title:"Aggressive · Bidding-War Play",
+    narrative:`This is the classic Florida coastal "bait" play and the recommended starting position for this property. With ocean and Intracoastal views from all 3 floors, no HOA / no CDD, and a meticulous 2019 remodel, you should see 3–6 showings the first weekend and 2–5 offers within 7–14 days. Plan to <b>review offers on a set date</b> to force the bidding to clear. Most aggressive plays at this band <i>close at or above</i> the implied market value once competition kicks in. The 15-day pending at 5730 Rudolph (same street, 700 sqft smaller) is the template — and that comp closed at $742/sqft.`
+  };
+  if(adjPct <= 3) return {
+    key:"market", tag:"AT MARKET", title:"At Market · Clean Sale",
+    narrative:`Priced right on top of the implied 6-comp average. This is the "fair price, no drama" position. Expect 1–3 showings per week, 1–2 offers within 30–45 days, and a typical 1–3% concession off list. You give up the bidding-war upside but you also avoid sitting on the market. Best for sellers who want predictable timing and don't want to manage a multi-offer process. The risk: the Anastasia Island micro-market is moving up ~9%/yr, so a clean sale at this price today is leaving the next year's appreciation on the table.`
+  };
+  if(adjPct <= 10) return {
+    key:"plus", tag:"MARKET PLUS", title:"Market + Premium · Standard List",
+    narrative:`Anchors slightly above the comp band so the eventual negotiation lands at fair value. Expect 1–2 offers and a typical 3–5% concession off list, with a 45–75 day cycle. This is the most common posture for sellers in no particular hurry. Watch for: showings will be steady but not frantic, and you should be ready to take a price reduction at the 45-day mark if no offers materialize. Carrying costs (taxes, insurance, maintenance) of ~$18–28k/yr should be modeled against the additional list premium you're trying to capture.`
+  };
+  if(adjPct <= 22) return {
+    key:"aspirational", tag:"ASPIRATIONAL", title:"Aspirational · Wait for the Right Buyer",
+    narrative:`A patient list aimed at the cash second-home buyer who falls in love with the ocean view and pays a premium for the no-HOA / no-CDD freedom. Plan for 4–8 months on market and at least one price reduction along the way. You're not playing the comp band — you're playing the "ocean view from 3 floors is irreplaceable" angle. The risk is real: buyers know what comps say, and a property that sits gets stale. Carrying costs add up. <b>Only pursue this if the seller is genuinely not in a hurry.</b>`
+  };
+  return {
+    key:"golden", tag:"GOLDEN PRICE", title:"Golden Price · Lottery Ticket",
+    narrative:`At this band you're not really listing the property to sell it — you're listing it to find out if the perfect buyer exists. Expect 8–14+ months on market, two or more price reductions, and probably no offers for the first 90 days. Properties at this band almost always end up closing well below list once the seller capitulates, and the long DOM creates a stigma that haunts the eventual close price. Carrying costs of $18–28k/yr will eat 1.0–1.5% of the home's value over a year. <b>Not recommended unless the seller is willing to walk away if the price isn't met.</b>`
+  };
+}
+
+function renderDynStrategy(implied){
+  const adjPct = parseFloat(document.getElementById("dynAdj").value);
+  document.getElementById("dynAdjLabel").textContent = fmtPct(adjPct);
+
+  const list = implied * (1 + adjPct/100);
+  document.getElementById("dynPrice").textContent = fmt$(list);
+  document.getElementById("dynPpsf").textContent = "$"+Math.round(list/SUBJECT_SQFT).toLocaleString()+"/sqft @ subject's 2,720 sqft";
+
+  const vsMarket = (list/implied - 1)*100;
+  const vsLabel = vsMarket >= 0
+    ? `<span style="color:var(--gold)">${fmtPct(vsMarket)} above implied market</span>`
+    : `<span style="color:var(--green)">${fmtPct(vsMarket)} below implied market</span>`;
+  document.getElementById("dynVsMarket").innerHTML = `List ${vsLabel} · Implied market: ${fmt$(implied)}`;
+
+  // Outcome model
+  let dom, offers, close;
+  if(adjPct <= -5){
+    dom = Math.max(7, 14 + (adjPct+8)*2);
+    offers = adjPct <= -10 ? "4–7" : (adjPct <= -7 ? "3–5" : "2–4");
+    close = Math.min(implied * 1.03, list * 1.05);
+  } else if(adjPct <= 8){
+    dom = 30 + adjPct*4;
+    offers = adjPct <= 3 ? "2–3" : "1–2";
+    close = list * (1 - Math.max(0, adjPct)/100 * 0.4);
+  } else {
+    dom = 90 + (adjPct-8)*12;
+    offers = adjPct >= 18 ? "0–1" : "1";
+    close = list * (1 - (adjPct-8)/100 * 0.55);
+  }
+  document.getElementById("dynDom").textContent = Math.round(dom)+" days";
+  document.getElementById("dynOffers").textContent = offers;
+  document.getElementById("dynClose").textContent = fmt$(close);
+  const closeVs = (close/implied - 1)*100;
+  document.getElementById("dynCloseVs").textContent = fmtPct(closeVs);
+
+  // Zone-based narrative + colour
+  const zone = strategyZone(adjPct);
+  const panel = document.getElementById("dynStrategy");
+  panel.className = "dyn-panel zone-"+zone.key;
+  document.getElementById("dynTag").textContent = zone.tag;
+  document.getElementById("dynTitle").textContent = zone.title;
+  document.getElementById("dynNarrative").innerHTML = zone.narrative;
+}
+
+document.getElementById("dynAdj").addEventListener("input", recalc);
+document.getElementById("addRow").addEventListener("click", ()=>{
+  comps.push({addr:"New comp", status:"Closed", price:1300000, sqft:2500, monthsAgo:3, beds:3, baths:2, dom:30, photo:"", mls:""});
+  renderTable(); renderCards(); recalc();
+});
+document.getElementById("resetComps").addEventListener("click", ()=>{
+  comps = JSON.parse(JSON.stringify(DEFAULT_COMPS));
+  renderTable(); renderCards(); recalc();
+});
+
+// ============ EXPORT DATA ============
+// Generates a fresh cma-data.js file with the current comps and downloads it.
+// User then replaces the existing cma-data.js in this folder.
+document.getElementById("exportData").addEventListener("click", ()=>{
+  const now = new Date().toISOString();
+  const data = {
+    meta: {
+      version: 1,
+      generated: now,
+      address: "5824 Rudolph Ave",
+      city: "St Augustine, FL 32080"
+    },
+    subject: {
+      sqft: SUBJECT_SQFT,
+      appreciationRate: APPRECIATION,
+      zestimate: 1095000,
+      lastSale: { price: 1028000, date: "21 Apr 2021" },
+      priorSale: { price: 620000, date: "19 Oct 2018" }
+    },
+    comps: comps
+  };
+  const json = JSON.stringify(data, null, 2);
+  const fileBody =
+`/* ============================================================
+   CMA SHARED DATA FILE — 5824 Rudolph Ave, St Augustine FL 32080
+   Generated by the admin dashboard on ${now}
+   This file is loaded by both the admin dashboard
+   (5824_Rudolph_CMA.html) and the client view
+   (5824_Rudolph_CMA_Client.html).
+   ============================================================ */
+
+window.CMA_DATA = ${json};
+`;
+  const blob = new Blob([fileBody], {type: "application/javascript"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "cma-data.js";
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  // Brief visual confirmation
+  const btn = document.getElementById("exportData");
+  const orig = btn.textContent;
+  btn.textContent = "✓ Downloaded — replace cma-data.js in this folder";
+  setTimeout(()=>{ btn.textContent = orig; }, 3500);
+});
+
+renderTable();
+renderCards();
+recalc();
+</script>
+</body>
+</html>
