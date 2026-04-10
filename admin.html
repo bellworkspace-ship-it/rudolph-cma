@@ -222,7 +222,7 @@
       <div>
         <div style="font-family:'Montserrat',sans-serif;font-size:11px;letter-spacing:3.6px;color:var(--teal-glow);font-weight:600;text-transform:uppercase;margin-bottom:2px">The Newcomer Group</div>
         <h1 style="margin:0;font-size:24px;color:var(--ink)">Comparative Market Analysis</h1>
-        <div class="sub" style="margin-top:4px">5824 Rudolph Avenue · St Augustine, FL 32080 · Butlers Beach · Anastasia Island · Prepared 9 April 2026</div>
+        <div class="sub" style="margin-top:4px">5824 Rudolph Avenue · St Augustine, FL 32080 · Butlers Beach · Anastasia Island · Prepared 10 April 2026</div>
       </div>
     </div>
     <div style="text-align:right;border:1px solid var(--teal);border-radius:10px;padding:10px 16px;background:#0e1c2a">
@@ -297,8 +297,8 @@
 
   <!-- ============ SECTION 2: COMPARABLES ============ -->
   <section class="section" id="comps-section">
-    <h2>Comparable Sales<span class="count">· 6 Paragon comps · Anastasia Island Area 07 · last 6 months</span></h2>
-    <div class="small" style="margin-bottom:14px">Live pull from Paragon MLS (BORMLS) on 9 April 2026. Filters: St Johns County, Area 07, SFR, $850k–$1.8M, 2,000–3,500 sqft, 3+ BR. The editable table below powers the valuation model — edit any cell and the strategy cards recalculate. <span style="color:var(--amber)">Note: the "Zillow ↗" link on each card opens a search, not necessarily the current listing — historical Zillow pages often reflect older configurations of the same property.</span></div>
+    <h2>Comparable Sales<span class="count">· 5 RPR comps · Anastasia Island Area 07 · last 6 months</span></h2>
+    <div class="small" style="margin-bottom:14px">Agent-selected comps from RPR (Realtors Property Resource), updated 10 April 2026. Filters: St Johns County, Area 07, single-family, similar size &amp; price band. The editable table below powers the valuation model — edit any cell and the strategy cards recalculate. <span style="color:var(--amber)">Note: the "Zillow ↗" link on each card opens a search, not necessarily the current listing — historical Zillow pages often reflect older configurations of the same property.</span></div>
 
     <div class="comp-cards" id="compCards"></div>
 
@@ -525,51 +525,6 @@ const zillowSearch = addr => `https://www.zillow.com/homes/${encodeURIComponent(
 
 const FALLBACK_COMPS = [
   {
-    addr: "5730 Rudolph Ave",
-    subdivision: "Butlers Beach · Area 07",
-    city: "Saint Augustine FL 32080",
-    status: "Pending",
-    price: 1495000,
-    sqft: 2016,
-    beds: 4,
-    baths: 4,
-    dom: 15,
-    monthsAgo: 0.5,
-    mls: "261400",
-    photo: "https://zimg.paragon.ice.com/ParagonImages/Property/PL/BORMLS/261400/0/120/90/eec13d6e0227146f6602246379567ab8/1/a7e89d7bd454780770c48a9284450623/261400-7B81E3B8-D64D-4B2A-BD1C-BFFDB858C902.JPG",
-    anchor: true
-  },
-  {
-    addr: "6525 Broward St",
-    subdivision: "Ocean Grove · Area 07",
-    city: "Saint Augustine FL 32080",
-    status: "Closed",
-    price: 1572500,
-    sqft: 2763,
-    beds: 4,
-    baths: 4,
-    dom: 8,
-    closingDate: "2/9/2026",
-    monthsAgo: 2,
-    mls: "260033",
-    photo: "https://zimg.paragon.ice.com/ParagonImages/Property/PL/BORMLS/260033/0/120/90/5255b824a42649b63eae4d78801abab0/1/25a078a645262f6646c0f2f6cde03a2e/260033-2D84DA23-0D29-49EF-B35E-8F613BC9BB5F.JPG"
-  },
-  {
-    addr: "110 7th Street",
-    subdivision: "Chatauqua Beach · Area 07",
-    city: "Saint Augustine Beach FL 32080",
-    status: "Closed",
-    price: 1600000,
-    sqft: 3246,
-    beds: 5,
-    baths: 6,
-    dom: 57,
-    closingDate: "3/23/2026",
-    monthsAgo: 0.5,
-    mls: "260293",
-    photo: "https://zimg.paragon.ice.com/ParagonImages/Property/PL/BORMLS/260293/0/120/90/216dd3af377af9e88206aed9a0b69a49/1/a81fdb8a0793ef2b5fab091a10b3c699/260293-b4e3dbcb-3b91-4239-94b8-7fc08edeac96.JPG"
-  },
-  {
     addr: "4969 Alta Vista Ave",
     subdivision: "Biera Mar · Area 07",
     city: "Saint Augustine FL 32080",
@@ -582,35 +537,66 @@ const FALLBACK_COMPS = [
     closingDate: "1/23/2026",
     monthsAgo: 2.5,
     mls: "256056",
-    photo: "https://zimg.paragon.ice.com/ParagonImages/Property/PL/BORMLS/256056/0/120/90/714a28694ca00b31a6effeca65c9319f/1/9072c45e41cb8df21e30ec3e0aaa99b4/256056-5b0b7f77-80d7-4fd9-80c2-22272a001802.JPG"
+    photo: ""
   },
   {
-    addr: "5599 Pelican Way",
-    subdivision: "Anastasia Hills · Area 07",
+    addr: "5224 Medoras Ave",
+    subdivision: "Butler Beach · Area 07",
     city: "Saint Augustine FL 32080",
-    status: "Active",
-    price: 1698000,
-    sqft: 2539,
-    beds: 4,
-    baths: 3.5,
-    dom: 68,
-    monthsAgo: 0,
-    mls: "260663",
-    photo: "https://zimg.paragon.ice.com/ParagonImages/Property/PL/BORMLS/260663/0/120/90/d3b2ae4cda85cf936272f604259db014/1/42683c8ac23d5cff934a61a455ac5b20/260663-a651c5c4-0029-4f11-9bdd-9ef528ed1686.JPG"
+    status: "Closed",
+    price: 1275000,
+    sqft: 2353,
+    beds: 3,
+    baths: 2.5,
+    dom: 70,
+    closingDate: "10/28/2025",
+    monthsAgo: 5.4,
+    mls: "254214",
+    photo: "",
+    anchor: true
   },
   {
-    addr: "9106 Mellon Ct",
-    subdivision: "Matanzas Inlet Bch · Area 07",
+    addr: "5813 Rudolph Ave",
+    subdivision: "Butler Beach · Area 07",
+    city: "Saint Augustine FL 32080",
+    status: "Closed",
+    price: 1200000,
+    sqft: 2680,
+    beds: 3,
+    baths: 2.5,
+    dom: 228,
+    closingDate: "11/6/2025",
+    monthsAgo: 5.1,
+    mls: "250778",
+    photo: ""
+  },
+  {
+    addr: "5810 A1a S",
+    subdivision: "Butler Beach · Area 07",
+    city: "Saint Augustine FL 32080",
+    status: "Pending",
+    price: 1239800,
+    sqft: 3178,
+    beds: 5,
+    baths: 4,
+    dom: 212,
+    monthsAgo: 0,
+    mls: "2108325",
+    photo: ""
+  },
+  {
+    addr: "5124 Osceola Ave",
+    subdivision: "Butler Beach · Area 07",
     city: "Saint Augustine FL 32080",
     status: "Active",
-    price: 1100000,
-    sqft: 2580,
+    price: 1169000,
+    sqft: 3001,
     beds: 4,
     baths: 3.5,
-    dom: 23,
+    dom: 67,
     monthsAgo: 0,
-    mls: "261257",
-    photo: "https://zimg.paragon.ice.com/ParagonImages/Property/PL/BORMLS/261257/0/120/90/fd2df6500925594424d9e26b3213efc3/1/bcfabff2d8ae0d076267c3263c507791/261257-7eca7d02-3b19-4b9c-bd5a-6ed7ea0d5499.JPG"
+    mls: "260573",
+    photo: ""
   }
 ];
 
@@ -732,11 +718,11 @@ function recalc(){
 function strategyZone(adjPct){
   if(adjPct <= -10) return {
     key:"loss", tag:"LOSS-LEADER", title:"Loss-Leader · Leaving Money on the Table",
-    narrative:`Pricing this far under fair value triggers a feeding-frenzy that you don't actually need at this price point. You'll get 4–7 offers in 7–10 days, but the bidding ceiling is set by what buyers <i>think</i> is reasonable, not by what the property is actually worth. Result: a fast close, but the market signal from 5730 Rudolph (~$742/sqft, 15 DOM) tells us you're walking away from real money. <b>Reset to ~−8% for the cleanest aggressive play.</b>`
+    narrative:`Pricing this far under fair value triggers a feeding-frenzy that you don't actually need at this price point. You'll get 4–7 offers in 7–10 days, but the bidding ceiling is set by what buyers <i>think</i> is reasonable, not by what the property is actually worth. Result: a fast close, but the anchor comp at 5224 Medoras ($542/sqft, 70 DOM) and the RPR CMA value of $1.3M tell us you're walking away from real money. <b>Reset to ~−8% for the cleanest aggressive play.</b>`
   };
   if(adjPct <= -5) return {
     key:"aggressive", tag:"AGGRESSIVE", title:"Aggressive · Bidding-War Play",
-    narrative:`This is the classic Florida coastal "bait" play and the recommended starting position for this property. With ocean and Intracoastal views from all 3 floors, no HOA / no CDD, and a meticulous 2019 remodel, you should see 3–6 showings the first weekend and 2–5 offers within 7–14 days. Plan to <b>review offers on a set date</b> to force the bidding to clear. Most aggressive plays at this band <i>close at or above</i> the implied market value once competition kicks in. The 15-day pending at 5730 Rudolph (same street, 700 sqft smaller) is the template — and that comp closed at $742/sqft.`
+    narrative:`This is the classic Florida coastal "bait" play and the recommended starting position for this property. With ocean and Intracoastal views from all 3 floors, no HOA / no CDD, and a meticulous 2019 remodel, you should see 3–6 showings the first weekend and 2–5 offers within 7–14 days. Plan to <b>review offers on a set date</b> to force the bidding to clear. Most aggressive plays at this band <i>close at or above</i> the implied market value once competition kicks in. The anchor comp at 5224 Medoras (2,353 sqft, closed $1,275,000 at $542/sqft) sets a strong floor, while 4969 Alta Vista ($621/sqft) shows the premium smaller-lot coastal homes can command.`
   };
   if(adjPct <= 3) return {
     key:"market", tag:"AT MARKET", title:"At Market · Clean Sale",

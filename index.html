@@ -239,10 +239,10 @@
 
   <!-- SECTION 2: COMPARABLES (READ-ONLY) -->
   <section class="section" id="comps-section">
-    <h2>Comparable Sales<span class="count">· <span id="compCount">6</span> Paragon comps · Anastasia Island Area 07 · last 6 months</span></h2>
-    <div class="small" style="margin-bottom:14px">Live pull from Paragon MLS (BORMLS). Filters: St Johns County, Area 07, single-family, $850k–$1.8M, 2,000–3,500 sqft, 3+ BR.</div>
+    <h2>Comparable Sales<span class="count">· <span id="compCount">5</span> RPR comps · Anastasia Island Area 07 · last 6 months</span></h2>
+    <div class="small" style="margin-bottom:14px">Agent-selected comps from RPR (Realtors Property Resource). Filters: St Johns County, Area 07, single-family, similar size &amp; price band.</div>
     <div class="comp-cards" id="compCards"></div>
-    <div class="footnote" style="margin-top:14px"><b>Anchor comp:</b> 5730 Rudolph Ave &mdash; same street, same Butlers Beach subdivision &mdash; went pending at $1,495,000 after just 15 days on market. It's only 2,016 sqft vs the subject's 2,720 sqft, meaning the subject has ~700 more sqft of oceanside living area to price into its list. <b>Closest size match:</b> 6525 Broward St (Ocean Grove, 2,763 sqft) closed at $1,572,500 in 8 days &mdash; the cleanest $/sqft proxy for the subject.</div>
+    <div class="footnote" style="margin-top:14px"><b>Anchor comp:</b> 5224 Medoras Ave &mdash; Butler Beach, 0.84 mi north &mdash; closed at $1,275,000 ($542/sqft) on 10/28/2025 after 70 days on market. At 2,353 sqft it's a solid coastal comp with beach access. <b>Closest size match:</b> 5813 Rudolph Ave (literally next door, 2,680 sqft) closed at $1,200,000 ($448/sqft) on 11/6/2025 &mdash; the most direct proximity comp for the subject.</div>
   </section>
 
   <!-- SECTION 3: DYNAMIC PRICING STRATEGY -->
@@ -477,11 +477,11 @@ function recalc(){
 function strategyZone(adjPct){
   if(adjPct <= -10) return {
     key:"loss", tag:"LOSS-LEADER", title:"Loss-Leader · Leaving Money on the Table",
-    narrative:`Pricing this far under fair value triggers a feeding-frenzy that you don't actually need at this price point. You'll get 4–7 offers in 7–10 days, but the bidding ceiling is set by what buyers <i>think</i> is reasonable, not by what the property is actually worth. Result: a fast close, but the market signal from 5730 Rudolph (~$742/sqft, 15 DOM) tells us you're walking away from real money. <b>Reset to ~−8% for the cleanest aggressive play.</b>`
+    narrative:`Pricing this far under fair value triggers a feeding-frenzy that you don't actually need at this price point. You'll get 4–7 offers in 7–10 days, but the bidding ceiling is set by what buyers <i>think</i> is reasonable, not by what the property is actually worth. Result: a fast close, but the anchor comp at 5224 Medoras ($542/sqft, 70 DOM) and the RPR CMA value of $1.3M tell us you're walking away from real money. <b>Reset to ~−8% for the cleanest aggressive play.</b>`
   };
   if(adjPct <= -5) return {
     key:"aggressive", tag:"AGGRESSIVE", title:"Aggressive · Bidding-War Play",
-    narrative:`This is the classic Florida coastal "bait" play and the recommended starting position for this property. With ocean and Intracoastal views from all 3 floors, no HOA / no CDD, and a meticulous 2019 remodel, you should see 3–6 showings the first weekend and 2–5 offers within 7–14 days. Plan to <b>review offers on a set date</b> to force the bidding to clear. Most aggressive plays at this band <i>close at or above</i> the implied market value once competition kicks in. The 15-day pending at 5730 Rudolph (same street, 700 sqft smaller) is the template — and that comp closed at $742/sqft.`
+    narrative:`This is the classic Florida coastal "bait" play and the recommended starting position for this property. With ocean and Intracoastal views from all 3 floors, no HOA / no CDD, and a meticulous 2019 remodel, you should see 3–6 showings the first weekend and 2–5 offers within 7–14 days. Plan to <b>review offers on a set date</b> to force the bidding to clear. Most aggressive plays at this band <i>close at or above</i> the implied market value once competition kicks in. The anchor comp at 5224 Medoras (2,353 sqft, closed $1,275,000 at $542/sqft) sets a strong floor, while 4969 Alta Vista ($621/sqft) shows the premium smaller-lot coastal homes can command.`
   };
   if(adjPct <= 3) return {
     key:"market", tag:"AT MARKET", title:"At Market · Clean Sale",
