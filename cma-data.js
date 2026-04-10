@@ -40,7 +40,7 @@ window.CMA_DATA = {
       closingDate: "1/23/2026",
       monthsAgo: 2.5,
       mls: "256056",
-      photo: ""
+      photo: "https://photos.zillowstatic.com/fp/eb3e958bf49ce79538fb581944d96fba-cc_ft_960.jpg"
     },
     {
       addr: "5224 Medoras Ave",
@@ -55,7 +55,7 @@ window.CMA_DATA = {
       closingDate: "10/28/2025",
       monthsAgo: 5.4,
       mls: "254214",
-      photo: "",
+      photo: "https://photos.zillowstatic.com/fp/45c427cb8ae349be5a45b56cfb6aab50-cc_ft_960.jpg",
       anchor: true
     },
     {
@@ -71,7 +71,7 @@ window.CMA_DATA = {
       closingDate: "11/6/2025",
       monthsAgo: 5.1,
       mls: "250778",
-      photo: ""
+      photo: "https://photos.zillowstatic.com/fp/28926edc0a81c8d20c6f22fc4ad5bf78-cc_ft_960.jpg"
     },
     {
       addr: "5810 A1a S",
@@ -85,7 +85,7 @@ window.CMA_DATA = {
       dom: 212,
       monthsAgo: 0,
       mls: "2108325",
-      photo: ""
+      photo: "https://photos.zillowstatic.com/fp/741249879f73ad2f520f280841aae1d5-cc_ft_960.jpg"
     },
     {
       addr: "5124 Osceola Ave",
@@ -99,7 +99,7 @@ window.CMA_DATA = {
       dom: 67,
       monthsAgo: 0,
       mls: "260573",
-      photo: ""
+      photo: "https://photos.zillowstatic.com/fp/40bb5cfa30c249d6628f7da10563bf41-cc_ft_960.jpg"
     }
   ]
 };
